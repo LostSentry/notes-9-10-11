@@ -1,8 +1,10 @@
+import java.sql.*;
+
 public class HelloDB {
     public static void main(String[] args) throws SQLException {
         String url = "jbc:sqlite:hello.sqlite";
 
-        Connection connection = DriverManager.getConnection(url)
+        Connection connection = DriverManager.getConnection(url);
         Statement statement = connection.createStatement();
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS cats (name TEXT, age, INTEGER)";
