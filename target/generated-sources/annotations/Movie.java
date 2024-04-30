@@ -2,6 +2,8 @@ public class Movie {
 
     private String name;
    private int stars;
+   private int id;
+
 
     public String getName() {
         return name;
@@ -30,6 +32,13 @@ public class Movie {
     private boolean watched;
 
     Movie(String name, int stars, boolean watched) {
+        this.name = name;
+        this.stars = stars;
+        this.watched = watched;
+    }
+
+    Movie(int id,String name, int stars, boolean watched) {
+        this.id = id;
         this.name = name;
         this.stars = stars;
         this.watched = watched;
