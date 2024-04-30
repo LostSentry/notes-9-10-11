@@ -8,9 +8,11 @@ public class MovieList {
    private static Database database;
     public static void main(String[] args) {
         database = new Database(DB_PATH);
-        addNewMovie();
-        checkIfWatchedAndRate();
-        displayAllMovies();
+//        addNewMovie();
+//        checkIfWatchedAndRate();
+//        deleteWatchedMovies();
+        searchMovie();
+//        displayAllMovies();
 
     }
 
@@ -50,6 +52,33 @@ public class MovieList {
                 movie.setWatched(true);
                 movie.setStars(stars);
                 database.updateMovie(movie);
+            }
+        }
+    }
+
+    public static void deleteWatchedMovies(){
+
+        System.out.println("Here are all the movies you have seen \n");
+
+        List<Movie> watchedMovies = database.getAllMoviesByWatched(true);
+
+        for (Movie movie: watchedMovies) {
+            boolean delete = yesNoInput("Delete " + movie.getName() + "?");
+            if (delete) {
+                database.deleteMovie(movie);
+            }
+        }
+    }
+
+    public static void searchMovie() {
+        String movieName = stringInput("Enter movie name: ");
+        List<Movie> movieMatches = database.search(movieName);
+
+        if (movieMatches.isEmpty()) {
+            System.out.println("No matches");
+        } else {
+            for (Movie movie: movieMatches) {
+                System.out.println(movie);
             }
         }
     }

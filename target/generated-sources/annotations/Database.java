@@ -117,4 +117,49 @@ public class Database {
 
     }
 
+    public void deleteMovie(Movie movie) {
+
+        try(Connection connection = DriverManager.getConnection(databasePath);
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movies WHERE name = ?")) {
+
+        preparedStatement.setString(1, movie.getName());
+        preparedStatement.execute();
+
+        } catch (SQLException e) {
+            System.out.println(" error deleting because " + e);
+        }
+
+    }
+
+    public List<Movie> search(String searchTerm) {
+
+        String sql = "SELECT * FROM movies WHERE UPPER(name) LIKE UPPER(?)";
+
+        try(Connection connection = DriverManager.getConnection(databasePath);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, "%" + searchTerm + "%");
+
+            ResultSet movieResults = preparedStatement.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+
+            while (movieResults.next()) {
+                String name = movieResults.getString("name");
+                int stars = movieResults.getInt("stars");
+                boolean watched = movieResults.getBoolean("watched");
+
+                Movie movie = new Movie(name, stars, watched);
+                movies.add(movie);
+            }
+
+            return movies;
+
+        } catch (SQLException e) {
+            System.out.println("Error searching because " + e);
+            return null;
+        }
+
+    }
+
 }
