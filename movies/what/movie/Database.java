@@ -15,7 +15,10 @@ public class Database {
           Statement statement = connection.createStatement()) {
 
           statement.execute("CREATE TABLE IF NOT EXISTS" +
-                  "movies ( id INTEGER PRIMARY KEY, name text, stars INTEGER, watched BOOLEAN)");
+                  "movies ( id INTEGER PRIMARY KEY, " +
+                  "name text, " +
+                  "stars INTEGER," +
+                  " watched BOOLEAN)");
 
       } catch (SQLException e) {
           System.out.println("Error creating movie DB table beacuse " + e);

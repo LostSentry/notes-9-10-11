@@ -16,14 +16,23 @@ public class MovieList {
 
     }
 
+    public static int getRatingOutOfFive(){
+        int rating = positiveIntInput("What is your rating, in stars out of 5?");
+        while (rating < 0 || rating > 5) {
+            System.out.println("Error, enter a number between 0 - 5 \n");
+            int rating = positiveIntInput("What is your rating, in stars out of 5?");
+        }
+        return rating;
+    }
+
     public static void addNewMovie() {
         do {
             String movieName = stringInput("Enter the movie name");
             boolean movieWatched = yesNoInput("Have you seen this movie yet?");
             int movieStars = 0;
             if (movieWatched) {
-                movieStars = positiveIntInput("What is your rating, in stars out of 5?");
-                // todo add validation for stars
+                movieStars = getRatingOutOfFive();
+                
             }
             Movie movie = new Movie(movieName, movieStars, movieWatched);
             database.addNewMovie(movie);
