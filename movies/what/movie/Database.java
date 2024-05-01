@@ -15,7 +15,7 @@ public class Database {
           Statement statement = connection.createStatement()) {
 
           statement.execute("CREATE TABLE IF NOT EXISTS" +
-                  "movies (name text, stars INTEGER, watched BOOLEAN)");
+                  "movies ( id INTEGER PRIMARY KEY, name text, stars INTEGER, watched BOOLEAN)");
 
       } catch (SQLException e) {
           System.out.println("Error creating movie DB table beacuse " + e);
@@ -24,12 +24,12 @@ public class Database {
 
     public void addNewMovie(Movie movie) {
 
-        String insertSQL = "INSERT INTO movies VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO movies (name, stars, watched) VALUES (?, ?, ?)";
 
         try(Connection connection = DriverManager.getConnection(databasePath);
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 
-            //todo add movie
+
             // insert into movies values
             preparedStatement.setString(1, movie.getName());
             preparedStatement.setInt(2, movie.getStars());
@@ -54,6 +54,7 @@ public class Database {
             List<Movie> movies = new ArrayList<>();
 
             while (movieResults.next()) {
+                int id = movieResults.getInt();
                 String name = movieResults.getString("name");
                 int stars = movieResults.getInt("stars");
                 boolean watched = movieResults.getBoolean("watched");
@@ -82,10 +83,11 @@ public class Database {
             List<Movie> movies = new ArrayList<>();
 
             while (movieResults.next()) {
+                int id = movieResults.getInt("id");
                 String name = movieResults.getString("name");
                 int stars = movieResults.getInt("stars");
                 boolean watched = movieResults.getBoolean("watched");
-                Movie movie = new Movie(name,stars,watched);
+                Movie movie = new Movie(id,name,stars,watched);
                 movies.add(movie);
             }
 
@@ -99,14 +101,14 @@ public class Database {
 
     public void updateMovie(Movie movie) {
 
-        String sql = "UPDATE movies SET stars = ?, watched = ? WHERE name = ?";
+        String sql = "UPDATE movies SET stars = ?, watched = ? WHERE id = ?";
 
         try(Connection connection = DriverManager.getConnection(databasePath);
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, movie.getStars());
             preparedStatement.setBoolean(2, movie.isWatched());
-            preparedStatement.setString(3, movie.getName());
+            preparedStatement.setString(3, movie.getId());
 
             preparedStatement.execute();
 
@@ -120,9 +122,9 @@ public class Database {
     public void deleteMovie(Movie movie) {
 
         try(Connection connection = DriverManager.getConnection(databasePath);
-        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movies WHERE name = ?")) {
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movies WHERE id = ?")) {
 
-        preparedStatement.setString(1, movie.getName());
+        preparedStatement.setInt(1, movie.getId());
         preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -145,11 +147,12 @@ public class Database {
             List<Movie> movies = new ArrayList<>();
 
             while (movieResults.next()) {
+                int id = movieResults.getId("id");
                 String name = movieResults.getString("name");
                 int stars = movieResults.getInt("stars");
                 boolean watched = movieResults.getBoolean("watched");
 
-                Movie movie = new Movie(name, stars, watched);
+                Movie movie = new Movie(id,name, stars, watched);
                 movies.add(movie);
             }
 

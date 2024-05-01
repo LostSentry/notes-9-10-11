@@ -4,6 +4,13 @@ public class Movie {
    private int stars;
    private int id;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -46,7 +53,7 @@ public class Movie {
 
     @Override
     public String toString(){
-        return "Movie name: " + name + " is rated " + stars + " stars. Have you watched this? " + watched;
+        return "Id is " + id + "movie name: " + name + " is rated " + stars + " stars. Have you watched this? " + watched;
     }
 
 }
