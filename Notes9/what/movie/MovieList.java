@@ -32,7 +32,7 @@ public class MovieList {
             int movieStars = 0;
             if (movieWatched) {
                 movieStars = getRatingOutOfFive();
-                
+
             }
             Movie movie = new Movie(movieName, movieStars, movieWatched);
             database.addNewMovie(movie);
